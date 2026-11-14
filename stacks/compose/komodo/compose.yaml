@@ -1,0 +1,65 @@
+###################################
+# 🦎 KOMODO COMPOSE - FERRETDB 🦎 #
+###################################
+
+## This compose file will deploy:
+##   1. Postgres + FerretDB Mongo adapter (https://www.ferretdb.com)
+##   2. Komodo Core
+##   3. Komodo Periphery
+
+services:
+  postgres:
+    # 🚨 Pin to a specific version. Updates can be breaking.
+    # https://github.com/FerretDB/documentdb/pkgs/container/postgres-documentdb
+    image: ghcr.io/ferretdb/postgres-documentdb
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    # ports:
+    #   - 5432:5432
+    volumes:
+      - /srv/docker/volumes/komodo/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${KOMODO_DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${KOMODO_DATABASE_PASSWORD}
+      POSTGRES_DB: postgres
+
+  ferretdb:
+    # 🚨 Pin to a specific version. Updates can be breaking.
+    # https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb
+    image: ghcr.io/ferretdb/ferretdb
+    labels:
+      komodo.skip: # Prevent Komodo from stopping with StopAllContainers
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    # ports:
+    #   - 27017:27017
+    volumes:
+      - /srv/docker/volumes/komodo/ferret-state:/state
+    environment:
+      FERRETDB_POSTGRESQL_URL: postgres://${KOMODO_DATABASE_USERNAME}:${KOMODO_DATABASE_PASSWORD}@postgres:5432/postgres
+  
+  core:
+    image: ghcr.io/moghtech/komodo-core:${COMPOSE_KOMODO_IMAGE_TAG:-2}
+    init: true
+    restart: unless-stopped
+    depends_on:
+      - ferretdb
+    ports:
+      - 9120:9120
+    env_file: /srv/docker/env_files/komodo.env
+    environment:
+      KOMODO_DATABASE_ADDRESS: ferretdb:27017
+    volumes:
+      ## Attach the Core / Periphery communication keys
+      - /srv/docker/volumes/komodo/keys:/config/keys
+      ## Store dated backups of the database - https://komo.do/docs/setup/backup
+      - /srv/docker/volumes/komodo/backups:/backups
+      ## Store sync files on server
+      - /srv/docker/volumes/komodo/sync:/sync
+      ## Optionally mount a custom core.config.toml
+      # - /path/to/core.config.toml:/config/config.toml
+      ## Optionally mount custom root CA certificate to trust
+      # - /path/to/root_ca.crt:/usr/local/share/ca-certificates/root_ca.crt
+
