@@ -1,16 +1,33 @@
-## Add your compose file here
+##########################
+# 🎬 JELLYFIN COMPOSE 🎬 #
+##########################
+
+## Mídia: pool mergerfs em /srv/midia (montado só leitura em /media)
+## Bibliotecas no Jellyfin: /media/Filmes, /media/Series, ...
+
 services:
-  hello_world:
-    image: hello-world
-    # networks:
-    #   - default
-    # ports:
-    #   - 3000:3000
-    # volumes:
-    #   - data:/data
-
-# networks:
-#   default: {}
-
-# volumes:
-#   data:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    user: 1000:1000
+    restart: unless-stopped
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp # autodescoberta na rede local
+    environment:
+      TZ: America/Sao_Paulo
+      ## Descomentar quando tiver proxy reverso
+      # JELLYFIN_PublishedServerUrl: https://jellyfin.seudominio.com
+    volumes:
+      - /srv/docker/volumes/jellyfin/config:/config
+      - /srv/docker/volumes/jellyfin/cache:/cache
+      - type: bind
+        source: /srv/midia
+        target: /media
+        read_only: true
+    ## Aceleração por GPU (Intel/AMD): descomentar e trocar o GID
+    ## pelo de `getent group render`
+    # group_add:
+    #   - "993"
+    # devices:
+    #   - /dev/dri:/dev/dri
