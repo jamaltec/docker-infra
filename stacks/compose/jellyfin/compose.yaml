@@ -24,7 +24,7 @@ services:
       - type: bind
         source: /srv/midia
         target: /media
-        read_only: true
+        read_only: false
     ## Aceleração por GPU (Intel/AMD): descomentar e trocar o GID
     ## pelo de `getent group render`
     # group_add:
