@@ -3,7 +3,7 @@
 ##########################
 
 ## Mídia: pool mergerfs em /srv/midia (montado só leitura em /media)
-## Bibliotecas no Jellyfin: /media/Filmes, /media/Series, ...
+## Bibliotecas no Jellyfin: /media/filmes, /media/series, ...
 
 services:
   jellyfin:

@@ -3,7 +3,7 @@
 ########################
 
 ## Mídia: pool mergerfs em /srv/midia, montado em /media (mesmo caminho do Jellyfin)
-## Pasta raiz no sonarr: /media/Series
+## Pasta raiz no sonarr: /media/series
 ## Rede "media" compartilhada com jellyfin/seerr (criar uma vez: docker network create media)
 
 services:
