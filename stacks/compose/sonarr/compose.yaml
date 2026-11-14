@@ -1,0 +1,28 @@
+########################
+# 📺 SONARR COMPOSE 📺 #
+########################
+
+## Mídia: pool mergerfs em /srv/midia, montado em /media (mesmo caminho do Jellyfin)
+## Pasta raiz no sonarr: /media/Series
+## Rede "media" compartilhada com jellyfin/seerr (criar uma vez: docker network create media)
+
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Sao_Paulo
+    volumes:
+      - /srv/docker/volumes/sonarr/config:/config
+      - /srv/midia:/media
+    networks:
+      - media
+
+networks:
+  media:
+    external: true
