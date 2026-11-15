@@ -1,0 +1,26 @@
+##########################
+# 🔎 PROWLARR COMPOSE 🔎 #
+##########################
+
+## Gerencia os indexadores e sincroniza com Sonarr/Radarr
+## Na rede "media": http://radarr:7878, http://sonarr:8989, http://prowlarr:9696
+
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    ports:
+      - 9696:9696
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Sao_Paulo
+    volumes:
+      - /srv/docker/volumes/prowlarr/config:/config
+    networks:
+      - media
+
+networks:
+  media:
+    external: true
