@@ -1,0 +1,4 @@
+## Conexão com o Docker, via proxy de leitura (ver compose.yaml)
+jamalserver:
+  host: dockerproxy
+  port: 2375

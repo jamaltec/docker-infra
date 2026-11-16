@@ -1,0 +1,15 @@
+## Barra do topo do painel
+- resources:
+    label: Sistema
+    cpu: true
+    memory: true
+    uptime: true
+- resources:
+    label: Mídia
+    disk: /srv/midia
+- datetime:
+    text_size: xl
+    locale: pt-BR
+    format:
+      dateStyle: long
+      timeStyle: short

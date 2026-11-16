@@ -1,0 +1,84 @@
+## Cada serviço tem:
+##   href      -> o link que abre ao tocar (IP do servidor, vem do env file)
+##   server/container -> mostra se o container está rodando (via dockerproxy)
+##   widget    -> números ao vivo; usa a chave de API do env file
+## Chaves: Radarr, Sonarr e Prowlarr em Settings > General > API Key
+##         Jellyfin em Painel > Chaves de API
+##         Seerr em Settings > General > API Key
+
+- Mídia:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8096
+        description: Assistir
+        server: jamalserver
+        container: jellyfin
+        widget:
+          type: jellyfin
+          url: http://jellyfin:8096
+          key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
+          enableBlocks: true
+          enableNowPlaying: true
+    - Seerr:
+        icon: jellyseerr.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:5055
+        description: Pedir filmes e séries
+        server: jamalserver
+        container: seerr
+        widget:
+          type: jellyseerr # mesma API do Seerr
+          url: http://seerr:5055
+          key: "{{HOMEPAGE_VAR_SEERR_KEY}}"
+
+- Automação:
+    - Radarr:
+        icon: radarr.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:7878
+        description: Filmes
+        server: jamalserver
+        container: radarr
+        widget:
+          type: radarr
+          url: http://radarr:7878
+          key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
+    - Sonarr:
+        icon: sonarr.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8989
+        description: Séries e animes
+        server: jamalserver
+        container: sonarr
+        widget:
+          type: sonarr
+          url: http://sonarr:8989
+          key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
+    - Prowlarr:
+        icon: prowlarr.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:9696
+        description: Indexadores
+        server: jamalserver
+        container: prowlarr
+        widget:
+          type: prowlarr
+          url: http://prowlarr:9696
+          key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
+    - qBittorrent:
+        icon: qbittorrent.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:8080
+        description: Downloads
+        server: jamalserver
+        container: qbittorrent
+        widget:
+          type: qbittorrent
+          url: http://qbittorrent:8080
+          username: "{{HOMEPAGE_VAR_QBIT_USER}}"
+          password: "{{HOMEPAGE_VAR_QBIT_PASS}}"
+
+- Infraestrutura:
+    - Komodo:
+        icon: komodo.png
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:9120
+        description: Deploy dos containers
+    - GitHub docker-infra:
+        icon: github.png
+        href: https://github.com/jamaltec/docker-infra
+        description: Composes e configurações

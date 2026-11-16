@@ -1,0 +1,16 @@
+title: JamalServer
+language: pt-BR
+theme: dark
+color: slate
+headerStyle: clean
+hideVersion: true
+layout:
+  Mídia:
+    style: row
+    columns: 2
+  Automação:
+    style: row
+    columns: 4
+  Infraestrutura:
+    style: row
+    columns: 2
